@@ -1,0 +1,15 @@
+# see https://cloudcustodian.io/docs/aws/examples/rdsdeleteunused.html
+vars:
+  metrics-filters: &metrics-filter
+        type: metrics
+        name: DatabaseConnections
+        days: 14
+        value: 0
+        op: equal
+policies:
+- name: rds-unused-databases
+  resource: rds
+  description: |
+    Take the average number of connections over 14 days for databases.
+  filters:
+    - <<: *metrics-filter

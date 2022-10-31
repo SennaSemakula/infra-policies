@@ -1,0 +1,123 @@
+vars:
+  required-tags: &required-tags
+      - "tag:Name": absent
+      - "tag:component": absent
+
+policies:
+# RDS
+  - name: rds-tag-compliance
+    resource: rds
+    comment: |
+      Report and delete total count of non compliant rds instances with tags
+    # conditions:
+    #   - region: eu-west-1
+    filters:
+       #  - State.Name: running
+       - "tag:component": absent
+       # - "tag:environment": absent
+       # - "tag:component": kultra-api
+    # actions:
+    #   - type: delete
+    #     skip_snapshot: true
+# EC2
+  - name: ec2-tag-compliance
+    resource: ec2
+    comment: |
+      Report and delete EC2 instances that do not comply with mandatory tags
+    # conditions:
+    #   - region: eu-west-1
+    filters:
+      - or:
+        - "tag:Name": absent
+        - "tag:component": absent
+  - name: lb-tag-compliance
+    resource: elb
+    comment: |
+      Report elastic load balancers that do not comply with mandatory tags
+    # conditions:
+    #   - region: eu-west-1
+    filters:
+      - or:
+        # - "tag:Name": absent
+        # - "tag:component": absent
+        # TODO: ignore default vpc
+        - "tag:aws:cloudformation:stack-id": absent
+# Nat Gateways
+  - name: nat-gw-tag-compliance
+    resource: nat-gateway
+    comment: |
+      Report and delete NAT gateways that do not comply with mandatory tags
+    # conditions:
+    #   - region: eu-west-1
+    filters:
+      - or:
+        # - "tag:Name": absent
+        # - "tag:component": absent
+        - "tag:aws:cloudformation:stack-id": absent
+  - name: vpc-tag-compliance
+    resource: vpc
+    comment: |
+      Report and delete VPC resources that do not comply with mandatory tags
+    # conditions:
+    #   - region: eu-west-1
+    filters:
+      - or:
+        # - "tag:Name": absent
+        # - "tag:component": absent
+        # TODO: ignore default vpc
+        - "tag:aws:cloudformation:stack-id": absent
+  - name: asg-tag-compliance
+    resource: asg
+    comment: |
+      Report and delete ASGs that do not comply with mandatory tags
+    # conditions:
+    #   - region: eu-west-1
+    filters:
+      - or:
+        # - "tag:Name": absent
+        # - "tag:component": absent
+        # TODO: ignore default vpc
+        - "tag:aws:cloudformation:stack-id": absent
+  - name: eip-tag-compliance
+    resource: elastic-ip
+    comment: |
+      Report and release elastic-ips that do not comply with mandatory tags
+    # conditions:
+    #   - region: eu-west-1
+    filters:
+      - or:
+        # - "tag:Name": absent
+        # - "tag:component": absent
+        # TODO: ignore default vpc
+        - "tag:aws:cloudformation:stack-id": absent
+  - name: eni-tag-compliance
+    resource: eni
+    comment: |
+      Report elastic network interfaces that do not comply with mandatory tags
+    # conditions:
+    #   - region: eu-west-1
+    filters:
+      - or:
+        # - "tag:Name": absent
+        # - "tag:component": absent
+        # TODO: ignore default vpc
+        - "tag:aws:cloudformation:stack-id": absent
+  - name: ecr-tag-compliance
+    resource: ecr
+    comment: |
+      Report ECR repos that do not comply with mandatory tags
+    # conditions:
+    #   - region: eu-west-1
+    filters:
+      - or:
+        # - "tag:Name": absent
+        # - "tag:component": absent
+        # TODO: ignore default vpc
+        - "tag:aws:cloudformation:stack-id": absent
+
+
+# TODO: add filter on ASGs
+
+
+
+
